@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - ShopEase</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #14213D;
+            --secondary: #FCA311;
+            --light: #E5E5E5;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa; 
+            color: #333;
+            padding-top: 80px;
+        }
+        .navbar { 
+            background-color: var(--primary) !important; 
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar-brand, .nav-link { color: #FFFFFF !important; }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        .nav-item {
+            margin: 0 8px;
+        }
+        .about-hero {
+            background: linear-gradient(rgba(20, 33, 61, 0.8), rgba(20, 33, 61, 0.8)), 
+                        url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        .about-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+            background: white;
+        }
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .about-img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .about-card:hover .about-img {
+            transform: scale(1.05);
+        }
+        .btn-primary { 
+            background-color: var(--secondary); 
+            border-color: var(--secondary); 
+            color: #000;
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 30px;
+        }
+        .btn-primary:hover { 
+            background-color: var(--primary); 
+            border-color: var(--primary); 
+            color: #fff;
+        }
+        .section-title {
+            position: relative;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-weight: 700;
+            text-align: left;
+        }
+        .section-title:after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 15px 0;
+            border-radius: 2px;
+        }
+        .about-content {
+            padding-right: 30px;
+        }
+        .about-content p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+        .about-content .lead {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        .about-card .card-body {
+            padding: 25px;
+        }
+        .about-card h5 {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .about-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--secondary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -12px;
+            background-color: white;
+            border: 4px solid var(--secondary);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .left {
+            left: 0;
+        }
+        .right {
+            left: 50%;
+        }
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid var(--light);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent white;
+        }
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid var(--light);
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent;
+        }
+        .right::after {
+            left: -12px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .team-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .team-img {
+            height: 250px;
+            object-fit: cover;
+        }
+        .team-social {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            background: rgba(252, 163, 17, 0.9);
+            padding: 15px;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        .team-card:hover .team-social {
+            bottom: 0;
+            opacity: 1;
+        }
+        .team-social a {
+            color: white;
+            font-size: 20px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        .team-social a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        .counter-item {
+            text-align: center;
+            padding: 30px 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        .counter-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .counter-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        .counter-text {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+         /*  Footer styling */
+         .footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .footer a:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+        .footer h5 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--secondary);
+        }
+        .footer .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 20px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .footer .social-icons a:hover {
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        .footer .newsletter-input {
+            border: none;
+            border-radius: 0;
+            padding: 12px 15px;
+        }
+        .footer .newsletter-btn {
+            border-radius: 0;
+            font-weight: 600;
+        }
+        .footer hr {
+            border-color: rgba(255, 255, 255, 0.1);
+            margin: 40px 0;
+        }
+        .footer-bottom {
+            font-size: 14px;
+        }
+        .footer-bottom a {
+            margin: 0 10px;
+            position: relative;
+        }
+        .footer-bottom a:not(:last-child)::after {
+            content: '|';
+            position: absolute;
+            right: -15px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .about-content {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            .section-title {
+                text-align: center;
+            }
+            .section-title:after {
+                margin: 15px auto;
+            }
+        }
+        @media (max-width: 768px) {
+            .feature-icons [class*="col-"] {
+                margin-bottom: 30px;
+            }
+            .feature-icons i {
+                font-size: 30px;
+            }
+            .carousel-container {
+                height: 400px;
+            }
+            .hero-overlay h1 {
+                font-size: 2.5rem;
+            }
+            .footer .col-md-4, .footer .col-md-2 {
+                margin-bottom: 30px;
+            }
+            .footer-bottom a::after {
+                display: none;
+            }
+            .footer-bottom a {
+                display: block;
+                margin: 5px 0;
+            }
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-item::after {
+                left: 18px;
+            }
+            .left::before, .right::before {
+                left: 60px;
+                border: medium solid white;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent white transparent transparent;
+            }
+            .right {
+                left: 0%;
+            }
+        }
+        @media (max-width: 576px) {
+            .carousel-container {
+                height: 350px;
+            }
+            .hero-overlay {
+                padding: 20px;
+            }
+            .hero-overlay h1 {
+                font-size: 2rem;
+            }
+            .hero-overlay p {
+                font-size: 1rem;
+            }
+            .about-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+   <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">ShopEase</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" href="Product.html">Products</a></li>
+                <li class="nav-item"><a class="nav-link" href="About.html">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="Contact.html">Contact</a></li>
+            </ul>
+            <div class="d-flex">
+                <div class="input-group me-3">
+                    <input type="text" class="form-control" placeholder="Search products..." id="searchInput">
+                    <button class="btn btn-primary" type="button" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <button class="btn btn-outline-light position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCounter">0</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <!-- Hero Section -->
+    <div class="about-hero">
+        <div class="container text-center" data-aos="fade-up">
+            <h1 class="display-4 fw-bold mb-3">Our Story</h1>
+            <p class="lead">Discover the journey behind ShopEase and the people who make it possible</p>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+                <div class="about-content">
+                    <h2 class="section-title">Who We Are</h2>
+                    <p class="lead">ShopEase is more than just an e-commerce platform - we're a community of passionate individuals dedicated to bringing you the best shopping experience.</p>
+                    <p>Founded in 2015, ShopEase started as a small online store with just 10 products. Today, we offer thousands of high-quality items across multiple categories, serving customers worldwide.</p>
+                    <p>Our mission is simple: to make online shopping easy, enjoyable, and accessible to everyone. We carefully curate our product selection to ensure quality and value, while our customer service team is always ready to assist you.</p>
+                    <a href="products.html" class="btn btn-primary btn-lg mt-3">Explore Our Products</a>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="about-card">
+                            <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="about-img w-100" alt="Our Team">
+                            <div class="card-body">
+                                <h5>Our Team</h5>
+                                <p>Dedicated professionals working to bring you the best shopping experience with expertise and passion.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="about-card">
+                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="about-img w-100" alt="Our Values">
+                            <div class="card-body">
+                                <h5>Our Values</h5>
+                                <p>Quality, integrity, and customer satisfaction at the core of everything we do, every single day.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="about-card">
+                            <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="about-img w-100" alt="Our Mission">
+                            <div class="card-body">
+                                <h5>Our Mission</h5>
+                                <p>To make online shopping easy, enjoyable, and accessible to everyone, with no compromises on quality.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="about-card">
+                            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="about-img w-100" alt="Our Community">
+                            <div class="card-body">
+                                <h5>Our Community</h5>
+                                <p>Millions of satisfied customers worldwide who trust us for their shopping needs and lifestyle.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="container-fluid py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center">By The Numbers</h2>
+            <div class="row">
+                <div class="col-md-3" data-aos="fade-up">
+                    <div class="counter-item">
+                        <div class="counter-number" id="customerCounter">0</div>
+                        <div class="counter-text">Happy Customers</div>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="counter-item">
+                        <div class="counter-number" id="productCounter">0</div>
+                        <div class="counter-text">Quality Products</div>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="counter-item">
+                        <div class="counter-number" id="orderCounter">0</div>
+                        <div class="counter-text">Orders Completed</div>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="counter-item">
+                        <div class="counter-number" id="countryCounter">0</div>
+                        <div class="counter-text">Countries Served</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline Section -->
+    <div class="container py-5">
+        <h2 class="section-title text-center">Our Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item left" data-aos="fade-right">
+                <div class="timeline-content">
+                    <h4>2015</h4>
+                    <p>ShopEase was founded with a small team of 5 people and just 10 products in our catalog.</p>
+                </div>
+            </div>
+            <div class="timeline-item right" data-aos="fade-left">
+                <div class="timeline-content">
+                    <h4>2016</h4>
+                    <p>Expanded our product range to over 500 items and reached 10,000 customers.</p>
+                </div>
+            </div>
+            <div class="timeline-item left" data-aos="fade-right">
+                <div class="timeline-content">
+                    <h4>2018</h4>
+                    <p>Launched our mobile app and introduced same-day delivery in major cities.</p>
+                </div>
+            </div>
+            <div class="timeline-item right" data-aos="fade-left">
+                <div class="timeline-content">
+                    <h4>2020</h4>
+                    <p>Reached 1 million customers and expanded our operations internationally.</p>
+                </div>
+            </div>
+            <div class="timeline-item left" data-aos="fade-right">
+                <div class="timeline-content">
+                    <h4>2023</h4>
+                    <p>Opened our first physical experience store and launched eco-friendly packaging.</p>
+                </div>
+            </div>
+            <div class="timeline-item right" data-aos="fade-left">
+                <div class="timeline-content">
+                    <h4>2025</h4>
+                    <p>Celebrating 10 years of serving customers with over 5,000 products in our catalog.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="container-fluid py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center">Meet Our Team</h2>
+            <div class="row">
+                <div class="col-lg-3 col-md-6" data-aos="zoom-in">
+                    <div class="team-card">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" class="w-100 team-img" alt="Team Member">
+                        <div class="card-body text-center">
+                            <h5>Sarah Johnson</h5>
+                            <p class="text-muted">CEO & Founder</p>
+                        </div>
+                        <div class="team-social text-center">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="team-card">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="w-100 team-img" alt="Team Member">
+                        <div class="card-body text-center">
+                            <h5>Michael Chen</h5>
+                            <p class="text-muted">CTO</p>
+                        </div>
+                        <div class="team-social text-center">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="team-card">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="w-100 team-img" alt="Team Member">
+                        <div class="card-body text-center">
+                            <h5>Emily Rodriguez</h5>
+                            <p class="text-muted">Marketing Director</p>
+                        </div>
+                        <div class="team-social text-center">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="team-card">
+                        <img src="https://randomuser.me/api/portraits/men/42.jpg" class="w-100 team-img" alt="Team Member">
+                        <div class="card-body text-center">
+                            <h5>David Wilson</h5>
+                            <p class="text-muted">Customer Experience</p>
+                        </div>
+                        <div class="team-social text-center">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer (same as index.html) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+                    <h5>ShopEase</h5>
+                    <p class="mb-4">Your one-stop shop for all the latest products at competitive prices.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5>Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#">All Products</a></li>
+                        <li class="mb-2"><a href="#">New Arrivals</a></li>
+                        <li class="mb-2"><a href="#">Featured</a></li>
+                        <li class="mb-2"><a href="#">Sale Items</a></li>
+                        <li class="mb-2"><a href="#">Best Sellers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5>Help</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#">Customer Service</a></li>
+                        <li class="mb-2"><a href="#">Track Order</a></li>
+                        <li class="mb-2"><a href="#">Returns</a></li>
+                        <li class="mb-2"><a href="#">Shipping Info</a></li>
+                        <li class="mb-2"><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <h5>Newsletter</h5>
+                    <p class="mb-3">Subscribe to get updates on special offers and new products</p>
+                    <form class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control newsletter-input" placeholder="Your email address" required>
+                            <button class="btn btn-primary newsletter-btn" type="submit">Subscribe</button>
+                        </div>
+                    </form>
+                    <p class="small">We respect your privacy. Unsubscribe at any time.</p>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row align-items-center footer-bottom">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2025 ShopEase. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="me-3">Privacy Policy</a>
+                    <a href="#" class="me-3">Terms of Service</a>
+                    <a href="#">Shipping Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Counter Animation
+        function animateCounter(id, target, duration) {
+            const element = document.getElementById(id);
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    clearInterval(timer);
+                    current = target;
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 16);
+        }
+
+        // Start counters when scrolled to stats section
+        window.addEventListener('scroll', function() {
+            const statsSection = document.querySelector('.bg-light');
+            const position = statsSection.getBoundingClientRect();
+            
+            if(position.top <= window.innerHeight && position.bottom >= 0) {
+                animateCounter('customerCounter', 25000, 200);
+                animateCounter('productCounter', 500, 200);
+                animateCounter('orderCounter', 15000, 200);
+                animateCounter('countryCounter', 30, 200);
+                // Remove event listener after firing once
+                window.removeEventListener('scroll', this);
+            }
+        });
+
+        // Make navbar solid when scrolling
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

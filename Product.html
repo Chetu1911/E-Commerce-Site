@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase - Products</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #14213D;
+            --secondary: #FCA311;
+            --light: #E5E5E5;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f8f9fa; 
+            padding-top: 80px; /* Add padding to prevent navbar overlap */
+        }
+        .navbar { 
+            background-color: var(--primary) !important; 
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar-brand, .nav-link { color: #FFFFFF !important; }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        .nav-item {
+            margin: 0 8px;
+        }
+        .btn-primary { 
+            background-color: var(--secondary); 
+            border-color: var(--secondary); 
+        }
+        .btn-primary:hover { 
+            background-color: var(--primary); 
+            border-color: var(--primary); 
+        }
+        .btn-outline-primary { 
+            color: var(--primary); 
+            border-color: var(--primary); 
+        }
+        .btn-outline-primary:hover { 
+            background-color: var(--primary); 
+            color: #FFFFFF; 
+        }
+        .sidebar { 
+            background-color: white; 
+            border-radius: 10px; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px; /* Adjusted to account for fixed navbar */
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+        .product-card { 
+            transition: all 0.3s ease; 
+            border-radius: 10px;
+            overflow: hidden;
+            height: 100%;
+        }
+        .product-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .product-img {
+            height: 200px;
+            object-fit: contain;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .category-item { 
+            cursor: pointer; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            padding: 8px 10px;
+        }
+        .category-item:hover, .category-item.active {
+            background-color: var(--secondary);
+            color: white !important;
+        }
+        .category-item:hover a, .category-item.active a {
+            color: white !important;
+        }
+        .price-range-slider .range-slider {
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+        }
+        .price-range-slider .range-slider .range-slider__thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--secondary);
+        }
+        .price-range-slider .range-slider__range {
+            background: var(--secondary);
+        }
+        .badge-discount {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+        }
+        .rating {
+            color: #FFD700;
+        }
+        .cart-item-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+        .cart-quantity {
+            width: 50px;
+            text-align: center;
+        }
+        .cart-modal .modal-content {
+            border-radius: 10px;
+        }
+        .cart-empty {
+            text-align: center;
+            padding: 30px;
+        }
+        .cart-empty i {
+            font-size: 50px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+         /*  Footer styling */
+         .footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .footer a:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+        .footer h5 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--secondary);
+        }
+        .footer .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 20px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .footer .social-icons a:hover {
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        .footer .newsletter-input {
+            border: none;
+            border-radius: 0;
+            padding: 12px 15px;
+        }
+        .footer .newsletter-btn {
+            border-radius: 0;
+            font-weight: 600;
+        }
+        .footer hr {
+            border-color: rgba(255, 255, 255, 0.1);
+            margin: 40px 0;
+        }
+        .footer-bottom {
+            font-size: 14px;
+        }
+        .footer-bottom a {
+            margin: 0 10px;
+            position: relative;
+        }
+        .footer-bottom a:not(:last-child)::after {
+            content: '|';
+            position: absolute;
+            right: -15px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .feature-icons [class*="col-"] {
+                margin-bottom: 30px;
+            }
+            .feature-icons i {
+                font-size: 30px;
+            }
+            .carousel-container {
+                height: 400px;
+            }
+            .hero-overlay h1 {
+                font-size: 2.5rem;
+            }
+            .footer .col-md-4, .footer .col-md-2 {
+                margin-bottom: 30px;
+            }
+            .footer-bottom a::after {
+                display: none;
+            }
+            .footer-bottom a {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+        @media (max-width: 576px) {
+            .carousel-container {
+                height: 350px;
+            }
+            .hero-overlay {
+                padding: 20px;
+            }
+            .hero-overlay h1 {
+                font-size: 2rem;
+            }
+            .hero-overlay p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">ShopEase</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="products.html">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="About.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Contact.html">Contact</a></li>
+                </ul>
+                <div class="d-flex">
+                    <div class="input-group me-3">
+                        <input type="text" class="form-control" placeholder="Search products..." id="searchInput">
+                        <button class="btn btn-primary" type="button" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-outline-light position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCounter">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your Shopping Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItemsContainer">
+                        <!-- Cart items will be dynamically inserted here -->
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <h5>Total: <span id="cartTotal">$0.00</span></h5>
+                        <button class="btn btn-primary" id="checkoutBtn">Proceed to Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="sidebar p-4">
+                    <!-- Categories -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">Categories</h5>
+                        <ul class="list-unstyled">
+                            <li class="category-item active" data-category="all">
+                                <a href="#" class="text-decoration-none text-dark">All Products</a>
+                            </li>
+                            <li class="category-item" data-category="electronics">
+                                <a href="#" class="text-decoration-none text-dark">Electronics</a>
+                            </li>
+                            <li class="category-item" data-category="clothing">
+                                <a href="#" class="text-decoration-none text-dark">Clothing</a>
+                            </li>
+                            <li class="category-item" data-category="home">
+                                <a href="#" class="text-decoration-none text-dark">Home & Kitchen</a>
+                            </li>
+                            <li class="category-item" data-category="beauty">
+                                <a href="#" class="text-decoration-none text-dark">Beauty</a>
+                            </li>
+                            <li class="category-item" data-category="sports">
+                                <a href="#" class="text-decoration-none text-dark">Sports & Outdoors</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Price Range -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">Price Range</h5>
+                        <div class="price-range-slider mb-3">
+                            <div class="range-slider">
+                                <input type="range" class="range-slider__range" id="priceRange" min="0" max="1000" value="1000">
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>$0</span>
+                                <span id="maxPriceValue">$1000</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ratings -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">Customer Ratings</h5>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="rating4" data-rating="4">
+                            <label class="form-check-label" for="rating4">
+                                <span class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i> & Up
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="rating3" data-rating="3">
+                            <label class="form-check-label" for="rating3">
+                                <span class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i> & Up
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rating2" data-rating="2">
+                            <label class="form-check-label" for="rating2">
+                                <span class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i> & Up
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Clear Filters -->
+                    <button class="btn btn-outline-primary w-100" id="clearFilters">
+                        <i class="fas fa-times me-2"></i>Clear All Filters
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Product Grid -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">All Products</h2>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
+                            Sort By: Featured
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item sort-option" href="#" data-sort="featured">Featured</a></li>
+                            <li><a class="dropdown-item sort-option" href="#" data-sort="price-low">Price: Low to High</a></li>
+                            <li><a class="dropdown-item sort-option" href="#" data-sort="price-high">Price: High to Low</a></li>
+                            <li><a class="dropdown-item sort-option" href="#" data-sort="rating">Customer Rating</a></li>
+                            <li><a class="dropdown-item sort-option" href="#" data-sort="newest">Newest Arrivals</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="row" id="productGrid">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+                
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!--  Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+                    <h5>ShopEase</h5>
+                    <p class="mb-4">Your one-stop shop for all the latest products at competitive prices.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5>Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#">All Products</a></li>
+                        <li class="mb-2"><a href="#">New Arrivals</a></li>
+                        <li class="mb-2"><a href="#">Featured</a></li>
+                        <li class="mb-2"><a href="#">Sale Items</a></li>
+                        <li class="mb-2"><a href="#">Best Sellers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5>Help</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#">Customer Service</a></li>
+                        <li class="mb-2"><a href="#">Track Order</a></li>
+                        <li class="mb-2"><a href="#">Returns</a></li>
+                        <li class="mb-2"><a href="#">Shipping Info</a></li>
+                        <li class="mb-2"><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <h5>Newsletter</h5>
+                    <p class="mb-3">Subscribe to get updates on special offers and new products</p>
+                    <form class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control newsletter-input" placeholder="Your email address" required>
+                            <button class="btn btn-primary newsletter-btn" type="submit">Subscribe</button>
+                        </div>
+                    </form>
+                    <p class="small">We respect your privacy. Unsubscribe at any time.</p>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row align-items-center footer-bottom">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2025 ShopEase. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="me-3">Privacy Policy</a>
+                    <a href="#" class="me-3">Terms of Service</a>
+                    <a href="#">Shipping Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                name: "Smart Watch Pro",
+                price: 199.99,
+                oldPrice: 249.99,
+                category: "electronics",
+                rating: 4,
+                image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Fitness tracker with heart rate monitor and waterproof design."
+            },
+            {
+                id: 2,
+                name: "Wireless Headphones",
+                price: 149.99,
+                oldPrice: 179.99,
+                category: "electronics",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Noise cancelling Bluetooth headphones with 30hr battery life."
+            },
+            {
+                id: 3,
+                name: "Smartphone X",
+                price: 899.99,
+                category: "electronics",
+                rating: 4,
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Latest model with 128GB storage and triple camera system."
+            },
+            {
+                id: 4,
+                name: "Running Shoes",
+                price: 89.99,
+                oldPrice: 119.99,
+                category: "sports",
+                rating: 3,
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Lightweight running shoes with cushioned soles for maximum comfort."
+            },
+            {
+                id: 5,
+                name: "Travel Backpack",
+                price: 59.99,
+                category: "sports",
+                rating: 4,
+                image: "https://images.unsplash.com/photo-1560343090-f0409e92791a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Waterproof backpack with USB charging port and anti-theft design."
+            },
+            {
+                id: 6,
+                name: "Polarized Sunglasses",
+                price: 129.99,
+                category: "clothing",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "UV protection sunglasses with lightweight metal frame."
+            },
+            {
+                id: 7,
+                name: "Cotton T-Shirt",
+                price: 24.99,
+                oldPrice: 29.99,
+                category: "clothing",
+                rating: 4,
+                image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Premium cotton t-shirt available in multiple colors."
+            },
+            {
+                id: 8,
+                name: "Blender Pro",
+                price: 79.99,
+                category: "home",
+                rating: 4,
+                image: "https://images.unsplash.com/photo-1560345573-9f45383c2a37?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "High-speed blender with 1000W motor and 8 preset programs."
+            },
+            {
+                id: 9,
+                name: "Facial Cream",
+                price: 39.99,
+                category: "beauty",
+                rating: 3,
+                image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Anti-aging facial cream with natural ingredients."
+            }
+        ];
+
+        // Cart data
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // DOM Elements
+        const productGrid = document.getElementById('productGrid');
+        const categoryItems = document.querySelectorAll('.category-item');
+        const priceRange = document.getElementById('priceRange');
+        const maxPriceValue = document.getElementById('maxPriceValue');
+        const ratingFilters = document.querySelectorAll('[data-rating]');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearFiltersBtn = document.getElementById('clearFilters');
+        const sortOptions = document.querySelectorAll('.sort-option');
+        const cartCounter = document.getElementById('cartCounter');
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        // Current filters
+        let currentFilters = {
+            category: 'all',
+            maxPrice: 1000,
+            minRating: 0,
+            searchQuery: '',
+            sortBy: 'featured'
+        };
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts(products);
+            updateCartCounter();
+            
+            // Event listeners
+            priceRange.addEventListener('input', function() {
+                currentFilters.maxPrice = parseInt(this.value);
+                maxPriceValue.textContent = `$${currentFilters.maxPrice}`;
+                filterProducts();
+            });
+            
+            categoryItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    categoryItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilters.category = this.dataset.category;
+                    filterProducts();
+                });
+            });
+            
+            ratingFilters.forEach(filter => {
+                filter.addEventListener('change', function() {
+                    if(this.checked) {
+                        currentFilters.minRating = parseInt(this.dataset.rating);
+                    } else {
+                        currentFilters.minRating = 0;
+                    }
+                    filterProducts();
+                });
+            });
+            
+            searchBtn.addEventListener('click', function() {
+                currentFilters.searchQuery = searchInput.value.toLowerCase();
+                filterProducts();
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') {
+                    currentFilters.searchQuery = searchInput.value.toLowerCase();
+                    filterProducts();
+                }
+            });
+            
+            clearFiltersBtn.addEventListener('click', function() {
+                // Reset all filters
+                currentFilters = {
+                    category: 'all',
+                    maxPrice: 1000,
+                    minRating: 0,
+                    searchQuery: '',
+                    sortBy: 'featured'
+                };
+                
+                // Reset UI
+                categoryItems.forEach(i => i.classList.remove('active'));
+                document.querySelector('[data-category="all"]').classList.add('active');
+                priceRange.value = 1000;
+                maxPriceValue.textContent = '$1000';
+                ratingFilters.forEach(f => f.checked = false);
+                searchInput.value = '';
+                document.getElementById('sortDropdown').textContent = 'Sort By: Featured';
+                
+                filterProducts();
+            });
+            
+            sortOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    currentFilters.sortBy = this.dataset.sort;
+                    document.getElementById('sortDropdown').textContent = `Sort By: ${this.textContent}`;
+                    filterProducts();
+                });
+            });
+
+            // Cart modal event listeners
+            document.getElementById('cartModal').addEventListener('shown.bs.modal', renderCartItems);
+            checkoutBtn.addEventListener('click', checkout);
+        });
+
+        // Render products function
+        function renderProducts(productsToRender) {
+            productGrid.innerHTML = '';
+            
+            if(productsToRender.length === 0) {
+                productGrid.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-search fa-3x mb-3 text-muted"></i>
+                        <h3>No products found</h3>
+                        <p>Try adjusting your search or filter criteria</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsToRender.forEach(product => {
+                const discountBadge = product.oldPrice 
+                    ? `<span class="badge badge-discount rounded-pill">-${Math.round((1 - product.price/product.oldPrice)*100)}%</span>`
+                    : '';
+                
+                const oldPrice = product.oldPrice 
+                    ? `<small class="text-muted text-decoration-line-through">$${product.oldPrice.toFixed(2)}</small>`
+                    : '';
+                
+                const stars = Array(5).fill().map((_, i) => 
+                    i < product.rating 
+                        ? '<i class="fas fa-star"></i>' 
+                        : '<i class="far fa-star"></i>'
+                ).join('');
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'col-md-4 mb-4';
+                productCard.innerHTML = `
+                    <div class="card product-card">
+                        <div class="position-relative">
+                            <img src="${product.image}" class="card-img-top product-img" alt="${product.name}">
+                            ${discountBadge}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">${product.name}</h5>
+                            <div class="rating mb-2">${stars}</div>
+                            <p class="card-text">${product.description}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold">$${product.price.toFixed(2)}</span>
+                                    ${oldPrice}
+                                </div>
+                                <button class="btn btn-primary btn-sm add-to-cart" data-id="${product.id}">
+                                    <i class="fas fa-shopping-cart"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add event listener to the add to cart button
+                productCard.querySelector('.add-to-cart').addEventListener('click', () => addToCart(product));
+                
+                productGrid.appendChild(productCard);
+            });
+        }
+
+        // Filter products function
+        function filterProducts() {
+            let filteredProducts = [...products];
+            
+            // Category filter
+            if(currentFilters.category !== 'all') {
+                filteredProducts = filteredProducts.filter(
+                    product => product.category === currentFilters.category
+                );
+            }
+            
+            // Price filter
+            filteredProducts = filteredProducts.filter(
+                product => product.price <= currentFilters.maxPrice
+            );
+            
+            // Rating filter
+            if(currentFilters.minRating > 0) {
+                filteredProducts = filteredProducts.filter(
+                    product => product.rating >= currentFilters.minRating
+                );
+            }
+            
+            // Search filter
+            if(currentFilters.searchQuery) {
+                filteredProducts = filteredProducts.filter(
+                    product => product.name.toLowerCase().includes(currentFilters.searchQuery) || 
+                              product.description.toLowerCase().includes(currentFilters.searchQuery)
+                );
+            }
+            
+            // Sort products
+            switch(currentFilters.sortBy) {
+                case 'price-low':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'rating':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'newest':
+                    // Assuming newer products have higher IDs
+                    filteredProducts.sort((a, b) => b.id - a.id);
+                    break;
+                default:
+                    // Default sort (featured)
+                    break;
+            }
+            
+            renderProducts(filteredProducts);
+        }
+
+        // Cart functions
+        function addToCart(product) {
+            const existingItem = cart.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            showToast(`${product.name} added to cart`);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+            showToast('Item removed from cart');
+        }
+
+        function updateQuantity(productId, newQuantity) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = parseInt(newQuantity) || 1;
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCounter();
+            renderCartItems();
+        }
+
+        function updateCartCounter() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCounter.textContent = totalItems;
+            cartCounter.style.display = totalItems > 0 ? 'block' : 'none';
+        }
+
+        function renderCartItems() {
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h5>Your cart is empty</h5>
+                        <p>Start shopping to add items to your cart</p>
+                    </div>
+                `;
+                cartTotal.textContent = '$0.00';
+                return;
+            }
+
+            let itemsHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                itemsHTML += `
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="${item.image}" class="cart-item-img me-3" alt="${item.name}">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">${item.name}</h6>
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" class="form-control cart-quantity mx-2" 
+                                       value="${item.quantity}" min="1" 
+                                       onchange="updateQuantity(${item.id}, this.value)">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <span class="ms-3 fw-bold">$${itemTotal.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${item.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <hr>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = itemsHTML;
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty');
+                return;
+            }
+            alert('Checkout functionality would be implemented here!');
+            // In a real app, this would redirect to a checkout page
+        }
+
+        function showToast(message) {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed bottom-0 end-0 p-3';
+            toast.style.zIndex = '1100';
+            toast.innerHTML = `
+                <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">ShopEase</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            
+            // Add to DOM
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Make functions available globally for inline event handlers
+        window.updateQuantity = updateQuantity;
+        window.removeFromCart = removeFromCart;
+    </script>
+</body>
+</html>
